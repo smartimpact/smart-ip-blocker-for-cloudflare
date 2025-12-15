@@ -1,0 +1,4 @@
+# Data directory - contains logs and cache
+# This directory should be writable by the web server
+
+# Keep this file to ensure the directory is tracked in git
