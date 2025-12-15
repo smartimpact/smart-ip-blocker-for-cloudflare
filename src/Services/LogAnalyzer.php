@@ -13,7 +13,8 @@ class LogAnalyzer
     private Application $app;
     private BlocklistManager $blocklist;
     private string $bansLogPath;
-    private string $pattern = '/^(\S+) /';
+    // Regex to match IPv4 or IPv6 at start of line
+    private string $pattern = '/^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|[0-9a-fA-F:]{2,}) /';
 
     // Allowed directories for log file access (configurable)
     private array $allowedPaths = [];

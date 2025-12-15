@@ -71,6 +71,11 @@ class Application
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
             header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
         }
+
+        // Cache control - prevent sensitive data caching
+        header('Cache-Control: no-store, no-cache, must-revalidate, private');
+        header('Pragma: no-cache');
+        header('Expires: 0');
     }
 
     /**

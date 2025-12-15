@@ -34,22 +34,28 @@ if (isset($_GET['error']) && $_GET['error'] === 'session_invalid') {
 
 // Handle login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
-
-    if (empty($username) || empty($password)) {
-        $error = 'Please enter both username and password.';
+    // Verify CSRF token
+    $csrfToken = $_POST['csrf_token'] ?? '';
+    if (!$app->auth()->verifyCsrfToken($csrfToken)) {
+        $error = 'Invalid request. Please refresh the page and try again.';
     } else {
-        $result = $app->auth()->attempt($username, $password);
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
 
-        if ($result === true) {
-            header('Location: index.php');
-            exit;
-        } elseif (is_string($result)) {
-            // Lockout message
-            $error = htmlspecialchars($result, ENT_QUOTES, 'UTF-8');
+        if (empty($username) || empty($password)) {
+            $error = 'Please enter both username and password.';
         } else {
-            $error = 'Invalid username or password.';
+            $result = $app->auth()->attempt($username, $password);
+
+            if ($result === true) {
+                header('Location: index.php');
+                exit;
+            } elseif (is_string($result)) {
+                // Lockout message
+                $error = htmlspecialchars($result, ENT_QUOTES, 'UTF-8');
+            } else {
+                $error = 'Invalid username or password.';
+            }
         }
     }
 }

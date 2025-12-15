@@ -58,6 +58,7 @@
             <?php endif; ?>
 
             <form method="POST" action="">
+                <?= $auth->csrfField() ?>
                 <div class="form-group">
                     <label class="form-label" for="username">Username</label>
                     <div class="input-wrapper">
